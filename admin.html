@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin | FarmWatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--tomato:#E8412F;--sun:#FFC72C;--leaf:#16894A;--deep:#0E3B2B;--mint:#D9F2D0;--white:#fff;
+--head:'Bricolage Grotesque','Trebuchet MS',sans-serif;--body:'Figtree','Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);color:var(--deep);background:var(--white);line-height:1.6;font-size:1.05rem}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.25rem}
+[hidden]{display:none!important}
+
+/* login */
+.login{min-height:100vh;background:var(--deep);display:grid;place-items:center;padding:1.25rem}
+.login .card{background:var(--white);border:3px solid var(--deep);border-radius:28px;padding:2rem;width:100%;max-width:420px;box-shadow:10px 10px 0 var(--sun)}
+.login h1{font-family:var(--head);font-weight:800;font-size:2.2rem;line-height:1.05;letter-spacing:-.03em;margin-bottom:.4rem}
+.login p.s{margin-bottom:1.3rem}
+
+/* header */
+.top{background:var(--deep);color:var(--white);border-radius:0 0 40px 40px;padding-bottom:2.4rem}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;flex-wrap:wrap}
+.logo{font-family:var(--head);font-weight:800;font-size:1.6rem;letter-spacing:-.02em;text-decoration:none}
+.logo span{color:var(--sun)}
+.nav-r{display:flex;gap:.6rem;align-items:center}
+.nav-r a{font-weight:600;text-decoration:none;padding:.5rem .9rem;border-radius:999px}
+.nav-r a:hover{background:rgba(255,255,255,.15)}
+h1.t{font-family:var(--head);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;letter-spacing:-.03em;margin-top:.8rem}
+.stats{display:flex;gap:.8rem;margin-top:1.3rem;flex-wrap:wrap}
+.stat{background:var(--sun);color:var(--deep);border:3px solid var(--white);border-radius:18px;padding:.6rem 1.1rem;font-weight:600}
+.stat b{font-family:var(--head);font-size:1.6rem;margin-right:.3rem}
+
+/* body */
+.tools{display:flex;gap:.7rem;flex-wrap:wrap;margin:2rem 0 1.4rem;align-items:center}
+.tab{font:inherit;font-weight:600;padding:.7rem 1.3rem;border:3px solid var(--deep);border-radius:999px;background:var(--white);color:var(--deep);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--deep);color:var(--white)}
+.tools input{flex:1 1 220px;font:inherit;padding:.7rem 1.1rem;border:3px solid var(--deep);border-radius:999px;color:var(--deep)}
+.list{display:grid;gap:1rem;padding-bottom:4rem}
+.row{border:3px solid var(--deep);border-radius:22px;padding:1.1rem 1.3rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.row:nth-child(4n+1){background:#FFEFB8}.row:nth-child(4n+2){background:#FFD9D3}
+.row:nth-child(4n+3){background:#CFE6FF}.row:nth-child(4n+4){background:var(--mint)}
+.row h3{font-family:var(--head);font-size:1.35rem;line-height:1.1}
+.row .meta{opacity:.85}
+.row .price{font-family:var(--head);font-weight:800;font-size:1.3rem}
+.empty{border:3px dashed var(--deep);border-radius:22px;padding:1.5rem;font-weight:600}
+
+/* form bits */
+form{display:grid;gap:.9rem}
+label{font-weight:600;display:grid;gap:.3rem}
+label input{font:inherit;padding:.75rem 1rem;border:3px solid var(--deep);border-radius:14px;color:var(--deep);width:100%}
+.btn{font:inherit;font-weight:600;padding:.8rem 1.4rem;border-radius:999px;border:3px solid var(--deep);background:var(--tomato);color:var(--white);cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.6;cursor:wait;transform:none}
+.btn.ghost{background:var(--white);color:var(--deep)}
+.nav-r .btn.ghost{border-color:var(--white)}
+.btn.small{padding:.4rem .9rem;font-size:.95rem}
+.msg{min-height:1.4rem;font-weight:600;color:#B3261E;margin-top:.6rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<main class="login" id="loginView">
+  <div class="card">
+    <h1>Admin login</h1>
+    <p class="s">For FarmWatch administrators only.</p>
+    <form id="loginForm">
+      <label>Email<input id="aEmail" type="email" autocomplete="email" required></label>
+      <label>Password<input id="aPass" type="password" autocomplete="current-password" required></label>
+      <button class="btn" id="aBtn">Log in</button>
+    </form>
+    <p class="msg" id="loginMsg" role="alert"></p>
+  </div>
+</main>
+
+<!-- DASHBOARD -->
+<div id="appView" hidden>
+  <header class="top">
+    <div class="wrap">
+      <nav class="nav" aria-label="Main">
+        <a class="logo" href="index.html">Farm<span>Watch</span></a>
+        <div class="nav-r">
+          <a href="index.html">View marketplace</a>
+          <button class="btn ghost small" id="logout">Log out</button>
+        </div>
+      </nav>
+      <h1 class="t">Admin dashboard</h1>
+      <div class="stats">
+        <div class="stat"><b id="nFarmers">0</b>farmers</div>
+        <div class="stat"><b id="nCrops">0</b>crops listed</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tools">
+      <button class="tab" id="tabFarmers" aria-selected="true">Farmers</button>
+      <button class="tab" id="tabCrops" aria-selected="false">Crops</button>
+      <input id="q" type="search" placeholder="Search" aria-label="Search">
+    </div>
+    <div class="list" id="list"><p class="empty">Loading…</p></div>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAzEciHKeJzZmihMWsZVYvh4jNz-OrspVA",
+    authDomain: "farm-watch-50535.firebaseapp.com",
+    projectId: "farm-watch-50535",
+    storageBucket: "farm-watch-50535.firebasestorage.app",
+    messagingSenderId: "695242174342",
+    appId: "1:695242174342:web:5bf655f5096acaa3b14607",
+    measurementId: "G-731TSKEK9W"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const day = t => t ? new Date(t).toLocaleDateString() : "";
+
+let farmers = [], crops = [], tab = "farmers", started = false, checking = false, unsubs = [];
+
+function loginMsg(t) { $("loginMsg").textContent = t; }
+function showLogin() { $("loginView").hidden = false; $("appView").hidden = true; }
+
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault(); checking = true; $("aBtn").disabled = true; loginMsg("");
+  try {
+    const cred = await signInWithEmailAndPassword(auth, $("aEmail").value.trim(), $("aPass").value);
+    const ok = (await getDoc(doc(db, "admins", cred.user.uid))).exists();
+    if (!ok) { await signOut(auth); loginMsg("This account is not an administrator."); }
+  } catch (err) {
+    loginMsg(err.code === "auth/invalid-credential" ? "Wrong email or password." : "Could not log in. Please try again.");
+  }
+  checking = false; $("aBtn").disabled = false;
+  if (auth.currentUser) enter(auth.currentUser);
+});
+
+onAuthStateChanged(auth, user => { if (checking) return; user ? enter(user) : (stop(), showLogin()); });
+
+async function enter(user) {
+  try {
+    if (!(await getDoc(doc(db, "admins", user.uid))).exists()) { await signOut(auth); showLogin(); return; }
+  } catch (e) { showLogin(); return; }
+  $("loginView").hidden = true; $("appView").hidden = false;
+  if (started) return; started = true;
+  unsubs.push(onSnapshot(collection(db, "farmers"), s => {
+    farmers = []; s.forEach(d => { const v = d.data(); if (v.recordType !== "setup") farmers.push({ id: d.id, ...v }); });
+    render();
+  }, fail));
+  unsubs.push(onSnapshot(collection(db, "crops"), s => {
+    crops = []; s.forEach(d => crops.push({ id: d.id, ...d.data() }));
+    render();
+  }, fail));
+}
+function stop() { unsubs.forEach(u => u()); unsubs = []; started = false; farmers = []; crops = []; }
+function fail() { $("list").innerHTML = '<p class="empty">Could not load data. Check your Firestore rules.</p>'; }
+
+function render() {
+  $("nFarmers").textContent = farmers.length;
+  $("nCrops").textContent = crops.length;
+  const term = $("q").value.trim().toLowerCase();
+  let html = "";
+  if (tab === "farmers") {
+    const list = farmers.filter(f => [f.name, f.email, f.phone, f.place].join(" ").toLowerCase().includes(term))
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    html = list.map(f => {
+      const n = crops.filter(c => c.farmerId === f.id).length;
+      return `<article class="row"><div><h3>${esc(f.name || "Unnamed farmer")}</h3>
+        <div class="meta">${esc(f.place)} ${f.phone ? "· " + esc(f.phone) : ""}</div>
+        <div class="meta">${esc(f.email)}</div></div>
+        <div><div class="price">${n} ${n === 1 ? "crop" : "crops"}</div><div class="meta">Joined ${esc(day(f.createdAt))}</div></div></article>`;
+    }).join("");
+  } else {
+    const list = crops.filter(c => [c.name, c.farmerName, c.location].join(" ").toLowerCase().includes(term))
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    html = list.map(c => `<article class="row"><div><h3>${esc(c.name)}</h3>
+        <div class="meta">By ${esc(c.farmerName || "unknown")} ${c.location ? "· " + esc(c.location) : ""}</div>
+        <div class="meta">${esc(c.quantity)} ${esc(c.unit)} available</div></div>
+        <div style="display:flex;gap:1rem;align-items:center"><div class="price">₹${esc(c.price)}/${esc(c.unit)}</div>
+        <button class="btn small" data-del="${esc(c.id)}">Delete</button></div></article>`).join("");
+  }
+  $("list").innerHTML = html || '<p class="empty">Nothing to show.</p>';
+}
+
+$("list").addEventListener("click", async e => {
+  const b = e.target.closest("button[data-del]"); if (!b) return;
+  const c = crops.find(x => x.id === b.dataset.del); if (!c) return;
+  if (!confirm("Delete " + c.name + " from the marketplace?")) return;
+  try { await deleteDoc(doc(db, "crops", c.id)); } catch (err) { alert("Could not delete. Please try again."); }
+});
+
+function pick(t) {
+  tab = t;
+  $("tabFarmers").setAttribute("aria-selected", t === "farmers");
+  $("tabCrops").setAttribute("aria-selected", t === "crops");
+  render();
+}
+$("tabFarmers").onclick = () => pick("farmers");
+$("tabCrops").onclick = () => pick("crops");
+$("q").addEventListener("input", render);
+$("logout").onclick = async () => { await signOut(auth); };
+</script>
+</body>
+</html>

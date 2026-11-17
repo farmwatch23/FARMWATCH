@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmwatch Customer Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f1;
+        }
+
+        header {
+            background: #176b35;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            margin: 0;
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 35px 10px;
+        }
+
+        .welcome h1 {
+            color: #176b35;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            width: 220px;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #ccc;
+        }
+
+        .card h2 {
+            color: #176b35;
+        }
+
+        button {
+            background: #176b35;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .options {
+            text-align: center;
+            padding: 30px;
+        }
+
+        footer {
+            background: #176b35;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌱 Farmwatch</h2>
+    <button onclick="logout()">Logout</button>
+</header>
+
+<section class="welcome">
+    <h1>Welcome, <span id="customerName">Customer</span>! 🌾</h1>
+
+    <p>Discover fresh crops directly from farmers.</p>
+
+    <p>Email: <span id="customerEmail"></span></p>
+</section>
+
+<h2 style="text-align:center;">Explore Our Crops</h2>
+
+<section class="categories">
+
+    <div class="card">
+        <h2>🌾 Paddy</h2>
+        <p>Explore Paddy crops.</p>
+        <button onclick="exploreCrop('paddy')">Explore</button>
+    </div>
+
+    <div class="card">
+        <h2>🌽 Maize</h2>
+        <p>Explore Maize crops.</p>
+        <button onclick="exploreCrop('Maize')">Explore</button>
+    </div>
+
+    <div class="card">
+        <h2>🌿 Cotton</h2>
+        <p>Explore Cotton crops.</p>
+        <button onclick="exploreCrop('cutton')">Explore</button>
+    </div>
+
+</section>
+
+<section class="options">
+    <h2>My Farmwatch</h2>
+        <button onclick="location.href='crop-products.html'">🛒 Buy Crops</button>
+<button onclick="location.href='my-orders.html'">📦 My Orders</button>
+<button onclick="location.href='my-profile.html'">👤 My Profile</button>
+</section>
+
+<footer>
+    <p>© 2026 Farmwatch | Connecting Farmers and Customers</p>
+</footer>
+<script type="module" src="customer-dashboad.js"></script>
+<script>
+function exploreCrop(crop) {
+    window.location.href =
+        "crop-products.html?crop=" + encodeURIComponent(crop);
+}
+</script>
+</body>
+</html>
